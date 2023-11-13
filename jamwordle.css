@@ -22,9 +22,20 @@ body {
 }
 
 .centered-text p {
-    font-family: 'Poppins', sans-serif; 
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+/* Default font size for larger screens */
+.centered-text p {
     font-size: 250%;
-    margin: 0; 
+}
+
+/* Adjust font size for smaller screens */
+@media only screen and (max-width: 600px) {
+    .centered-text p {
+        font-size: 150%; /* Adjust the size based on your preference */
+    }
 }
 
 .buttons {
