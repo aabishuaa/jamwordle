@@ -19,6 +19,7 @@
   }
   .title {
     font-size: 36px;
+    font-weight: bold;
     margin-top: 20px;
     color: white;
     font-family: 'Poppins', sans-serif;
@@ -282,6 +283,7 @@
     font-family: 'Poppins', sans-serif;
     border: 1px solid #333;
     border-radius: 15px;
+    font-weight: bold;
     background-color: #f0f0f0;
 }
 
@@ -297,5 +299,13 @@
 .level-btn[data-state="corrected"] {
   border: none;
   background-color: hsl(115, 29%, 43%);
+}
+
+.level-lost{
+  background-color: #B53B3B;
+}
+
+.level-won{
+  background-color: #538D4E;
 }
 

@@ -15314,7 +15314,6 @@ const targetWords = [
   let targetWord = levelWords[currentLevel - 1];
   const completedLevels = localStorage.getItem('completedLevels') ? JSON.parse(localStorage.getItem('completedLevels')) : [];
   
-  console.log(targetWord);
   startInteraction()
 
   levelButtons.forEach((button) => {
@@ -15328,12 +15327,12 @@ const targetWords = [
 nextLevelButton.addEventListener("click", () => {
     if (currentLevel < levelWords.length) {
         currentLevel++;
-        console.log("It a wuk");
+        window.location.reload(3000);
         targetWord = levelWords[currentLevel - 1];
         startNextLevel();
         document.getElementById("popup").style.display = "none";
     } else {
-        console.log("You've reached the last level!");
+        showAlert("Yuh Deh Di Laas Level");
     }
 });
 
@@ -15347,25 +15346,17 @@ function startNextLevel(won) {
   });
 
   if (won) {
-      if (currentLevel <= levelButtons.length) {
           levelButtons[currentLevel - 2].classList.add("corrected");
           levelButtons[currentLevel - 2].disabled = true;
 
           const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
           completedLevels.push(currentLevel - 1);
           localStorage.setItem('completedLevels', JSON.stringify(completedLevels));
-      }
   } else {
-      if (currentLevel <= levelButtons.length) {
           levelButtons[currentLevel - 2].classList.add("wronged");
           levelButtons[currentLevel - 2].disabled = true;
-      }
-  }
-
-  setTimeout(() => {
       
-      location.reload(); 
-  }, 2000);
+  }
 }
 
   function startInteraction() {
@@ -15495,18 +15486,15 @@ function getDuplicateLetters(letters) {
             if ((duplicateTargetLetters.length==0 && duplicateGuessLetters.length==0)){
                 if (guessLetter === targetLetter) {
                     tile.dataset.state = "correct"; // Green
-                    console.log("WHY AM I HERE");
                     key.classList.add("correct");
                 }
                 else if (guessLetter!=targetLetter && targetLetters.includes(guessLetter)){
                     tile.dataset.state = "wrong-location"; // Yellow
                     key.classList.add("wrong-location");
-                    console.log("WHY AM I HERE 2");
                 }
                 else {
                     tile.dataset.state = "wrong"; // Grey
                     key.classList.add("wrong");
-                    console.log("WHY AM I HERE??");
                 }
                 
             } else if ((duplicateTargetLetters.length==0 && duplicateGuessLetters.length!=0)) {
@@ -15518,17 +15506,14 @@ function getDuplicateLetters(letters) {
                             }
                             else if (guessLetter!=targetLetter && targetLetters.includes(guessLetter)){
                                 tile.dataset.state = "wrong-location"; // Yellow
-                                console.log("WHY AM I HERE 4");
                                 key.classList.add("wrong-location");
                             }
                             else {
                                 tile.dataset.state = "wrong"; // Grey
-                                key.classList.add("wrong");
                             }
                         } else {
                             if (duplicateGuessLetters.includes(guessLetter) || !targetLetters.includes(guessLetter)){
                                 tile.dataset.state = "wrong";
-                                console.log("THIS SHOULD LOG!")
                                 key.classList.add("wrong");
                             } else if (guessLetter === targetLetter){
                                 tile.dataset.state = "correct"; // Green
@@ -15536,7 +15521,6 @@ function getDuplicateLetters(letters) {
                             } else{
                                 tile.dataset.state = "wrong-location";
                                 key.classList.add("wrong-location");
-                                console.log("WHY AM I HERE 5");
                             }
                         }
                     } else{
@@ -15545,31 +15529,26 @@ function getDuplicateLetters(letters) {
                                 if (currLetters.includes(guessLetter) && !duplicateTargetLetters.includes(guessLetter)) {
                                   tile.dataset.state = "wrong"; // Grey
                                   key.classList.add("wrong");
-                                  console.log("WRONG BY REPETITION");
                                 } else{
                                   currLetters.push(guessLetter);
                                   tile.dataset.state = "correct"; // Green
                                   key.classList.add("correct");
-                                  console.log("Letters match up, letter added to list")
                                 }
                                 }
                                 else if (guessLetter!=targetLetter && targetLetters.includes(guessLetter)){
                                   if (currLetters.includes(guessLetter) && !duplicateTargetLetters.includes(guessLetter)) {
                                     tile.dataset.state = "wrong"; // Grey
                                     key.classList.add("wrong");
-                                    console.log("Repeated letter added");
                                   } else{
                                     currLetters.push(guessLetter);
                                     tile.dataset.state = "wrong-location"; // Yellow
                                     key.classList.add("wrong-location");
-                                    console.log("Letter added to list wrong location");
                                   }
                                 }
                                 else {
                                     currLetters.push(guessLetter);
                                     tile.dataset.state = "wrong"; // Grey
                                     key.classList.add("wrong");
-                                    console.log("e wrang, letters added");
                                 }   
                                 if (isLastIteration) {
                                   currLetters.length = 0; // Reset currLetters on the last iteration
@@ -15625,23 +15604,27 @@ function getDuplicateLetters(letters) {
     })
   }
   
+
   function checkWinLose(guess, tiles) {
     if (guess === targetWord) {
-      showAlert("Rayyyy Yuh Win: " + targetWord.toUpperCase());
-      danceTiles(tiles)
-      stopInteraction()
-      showPopup("TRY FI BEAT WUL A DE LEVEL DEM!")
+      danceTiles(tiles);
+      stopInteraction();
+      levelButtons[currentLevel-2].style.backgroundColor = '#538D4E';
+      showPopup("Yuh Beat Da Level Yah!");
+      localStorage.setItem('levelColor' + (currentLevel-1), '#538D4E');
       startNextLevel(true);
-      return
+      return;
     }
   
-    const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
+    const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])");
     if (remainingTiles.length === 0) {
-      showAlert("Abayyy Yuh Lose: " + targetWord.toUpperCase());
-      stopInteraction();
+      showPopup("Yuh Lose Da Level Yah! WORD: " + targetWord.toUpperCase());
+      levelButtons[currentLevel-2].style.backgroundColor = '#B53B3B';
+      localStorage.setItem('levelColor' + (currentLevel-1), '#B53B3B');
       startNextLevel(false);
     }
   }
+  
   function showPopup(message) {
     const popup = document.getElementById("popup");
     const popupMessage = document.getElementById("popup-message");
