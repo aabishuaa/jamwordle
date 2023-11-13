@@ -26,15 +26,15 @@ body {
     margin: 0;
 }
 
-/* Default font size for larger screens */
+
 .centered-text p {
     font-size: 250%;
 }
 
-/* Adjust font size for smaller screens */
-@media only screen and (max-width: 600px) {
+
+@media only screen and (max-width: 375px) {
     .centered-text p {
-        font-size: 150%; /* Adjust the size based on your preference */
+        font-size: 150%; 
     }
 }
 
