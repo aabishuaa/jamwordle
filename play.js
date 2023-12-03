@@ -15609,7 +15609,7 @@ function getDuplicateLetters(letters) {
     if (guess === targetWord) {
       danceTiles(tiles);
       stopInteraction();
-      levelButtons[currentLevel-2].style.backgroundColor = '#538D4E';
+      levelButtons[currentLevel-1].style.backgroundColor = '#538D4E';
       showPopup("Yuh Beat Da Level Yah!");
       localStorage.setItem('levelColor' + (currentLevel-1), '#538D4E');
       startNextLevel(true);
